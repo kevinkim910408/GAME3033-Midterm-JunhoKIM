@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
         capsuleCollider = GetComponent<CapsuleCollider>();
 
         canJump = true;
+        
     }
 
     // Update is called once per frame
@@ -108,8 +109,9 @@ public class PlayerController : MonoBehaviour
     {
         isJump = value.isPressed; // button press => isjump = true
 
-
+ 
         animator.SetBool(IsJumpingHash, value.isPressed); // jump anim
+
         //Debug.Log(value.Get());
     }
 
@@ -120,6 +122,7 @@ public class PlayerController : MonoBehaviour
             canJump = true;
             animator.SetBool(IsJumpingHash, false);
         }
+        
     }
 
 }
