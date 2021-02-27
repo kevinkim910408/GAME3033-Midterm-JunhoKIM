@@ -21,6 +21,18 @@ public class PlayerController : MonoBehaviour
     CapsuleCollider capsuleCollider;
     CanvasUI canvasUI;
 
+
+    // Particle
+    [SerializeField] ParticleSystem jumpParticlePrefab;
+
+    // right
+    [SerializeField] Transform jumpParticleSpawnPoint_R;
+    ParticleSystem jumpParticle_R;
+
+    // right
+    [SerializeField] Transform jumpParticleSpawnPoint_L;
+    ParticleSystem jumpParticle_L;
+
     [SerializeField] Text timerText = null;
     [SerializeField] Text scoreText = null;
     [SerializeField] float timer;
@@ -56,8 +68,12 @@ public class PlayerController : MonoBehaviour
         canJump = true;
         canMove = true;
         isLose = false;
+    }
 
-
+    private void Start()
+    {
+        jumpParticle_R = Instantiate(jumpParticlePrefab, jumpParticleSpawnPoint_R.position, Quaternion.identity) ;
+        jumpParticle_L = Instantiate(jumpParticlePrefab, jumpParticleSpawnPoint_L.position, Quaternion.identity) ;
     }
 
     // Update is called once per frame
@@ -73,6 +89,8 @@ public class PlayerController : MonoBehaviour
             Jump();
         }
         transform.Rotate(Vector3.up, rotationDir * mouseSensitivity * Time.deltaTime);
+
+        
     }
 
     private void Timer()
@@ -109,11 +127,15 @@ public class PlayerController : MonoBehaviour
         if (!isJump)
             return;
 
+
+
         _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         isJump = false;
 
         // prevent double jump
         canJump = false;
+
+
 
     }
     public void OnMove(InputValue value)
@@ -175,6 +197,14 @@ public class PlayerController : MonoBehaviour
         {
             canJump = true;
             animator.SetBool(IsJumpingHash, false);
+
+            jumpParticle_R.transform.position = jumpParticleSpawnPoint_R.transform.position;
+            jumpParticle_R.transform.rotation = jumpParticleSpawnPoint_R.transform.rotation;
+            jumpParticle_L.transform.position = jumpParticleSpawnPoint_L.transform.position;
+            jumpParticle_L.transform.rotation = jumpParticleSpawnPoint_L.transform.rotation;
+
+            jumpParticle_R.Play();
+            jumpParticle_L.Play();
 
         }
 
