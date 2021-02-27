@@ -19,6 +19,15 @@ public class CanvasUI : MonoBehaviour
         pausePanel.SetActive(false);
 
         isPause = false;
+
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
+    }
+
+    public void SwitchToMenu(bool menues)
+    {
+        Cursor.lockState = menues ? CursorLockMode.None : CursorLockMode.Locked;
     }
 
 
@@ -26,12 +35,14 @@ public class CanvasUI : MonoBehaviour
     {
         if (!isPause)
         {
+            SwitchToMenu(true);
             isPause = true;
             Time.timeScale = 0;
             losePanel.gameObject.SetActive(true);
         }
         else
         {
+            SwitchToMenu(false);
             isPause = false;
             Time.timeScale = 1;
             losePanel.gameObject.SetActive(false);
@@ -42,12 +53,14 @@ public class CanvasUI : MonoBehaviour
     {
         if (!isPause)
         {
+            SwitchToMenu(true);
             isPause = true;
             Time.timeScale = 0;
             winPanel.gameObject.SetActive(true);
         }
         else
         {
+            SwitchToMenu(false);
             isPause = false;
             Time.timeScale = 1;
             winPanel.gameObject.SetActive(false);
@@ -58,6 +71,7 @@ public class CanvasUI : MonoBehaviour
     {
         if (isPause)
         {
+            SwitchToMenu(false);
             isPause = false;
             Time.timeScale = 1;
             SceneManager.LoadScene("GameScene");
@@ -77,20 +91,25 @@ public class CanvasUI : MonoBehaviour
         }
     }
 
+    // button pause
     public void OnPause()
     {
         if (!isPause)
         {
+            SwitchToMenu(true);
             isPause = true;
             Time.timeScale = 0;
             pausePanel.gameObject.SetActive(true);
         }
     }
 
+ 
+
     public void OnResume()
     {
         if (isPause)
         {
+            SwitchToMenu(false);
             isPause = false;
             Time.timeScale = 1;
             pausePanel.gameObject.SetActive(false);

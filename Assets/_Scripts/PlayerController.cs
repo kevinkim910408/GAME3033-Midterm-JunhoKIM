@@ -9,9 +9,11 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     Vector3 moveVector = Vector3.zero;
+    float rotationDir;
 
     [SerializeField] float moveSpeed = 10.0f;
     [SerializeField] float jumpForce = 5.0f;
+    [SerializeField] float mouseSensitivity = 5.0f;
 
     // components
     Animator animator;
@@ -35,6 +37,7 @@ public class PlayerController : MonoBehaviour
 
     // boolean
     bool isJump;
+    bool isOnPause;
     bool canJump;
     bool canMove;
     bool isLose;
@@ -67,6 +70,10 @@ public class PlayerController : MonoBehaviour
         {
             Jump();
         }
+
+        transform.Rotate(Vector3.up, rotationDir * mouseSensitivity * Time.deltaTime);
+
+
 
 
     }
@@ -136,11 +143,29 @@ public class PlayerController : MonoBehaviour
         //Debug.Log(value.Get());
     }
 
+    public void OnPause(InputValue value)
+    {
+        isOnPause = value.isPressed;
+
+        if (isOnPause)
+        {
+            canvasUI.OnPause();
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+
+    }
 
 
 
+    public void OnMouseMove(InputValue value)
+    {
+        Vector2 getMouseValue = value.Get<Vector2>();
+
+        rotationDir = getMouseValue.x;
 
 
+    }
 
 
     private void OnCollisionEnter(Collision collision)

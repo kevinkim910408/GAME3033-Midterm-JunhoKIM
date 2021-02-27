@@ -33,6 +33,22 @@ public class @InputSystem : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""MouseMove"",
+                    ""type"": ""Value"",
+                    ""id"": ""ea050705-17c6-41c1-ba1b-0dd45c804f18"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": ""NormalizeVector2"",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""91b446b7-779a-40d9-949b-da668000c4e1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": ""NormalizeVector2"",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -101,6 +117,28 @@ public class @InputSystem : IInputActionCollection, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9a80559b-2705-4eb6-a497-940c766e9043"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6d216751-0f18-4975-b51c-bff1306230f8"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -111,6 +149,8 @@ public class @InputSystem : IInputActionCollection, IDisposable
         m_Mazer = asset.FindActionMap("Mazer", throwIfNotFound: true);
         m_Mazer_Move = m_Mazer.FindAction("Move", throwIfNotFound: true);
         m_Mazer_Jump = m_Mazer.FindAction("Jump", throwIfNotFound: true);
+        m_Mazer_MouseMove = m_Mazer.FindAction("MouseMove", throwIfNotFound: true);
+        m_Mazer_Pause = m_Mazer.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -162,12 +202,16 @@ public class @InputSystem : IInputActionCollection, IDisposable
     private IMazerActions m_MazerActionsCallbackInterface;
     private readonly InputAction m_Mazer_Move;
     private readonly InputAction m_Mazer_Jump;
+    private readonly InputAction m_Mazer_MouseMove;
+    private readonly InputAction m_Mazer_Pause;
     public struct MazerActions
     {
         private @InputSystem m_Wrapper;
         public MazerActions(@InputSystem wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Mazer_Move;
         public InputAction @Jump => m_Wrapper.m_Mazer_Jump;
+        public InputAction @MouseMove => m_Wrapper.m_Mazer_MouseMove;
+        public InputAction @Pause => m_Wrapper.m_Mazer_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Mazer; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -183,6 +227,12 @@ public class @InputSystem : IInputActionCollection, IDisposable
                 @Jump.started -= m_Wrapper.m_MazerActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_MazerActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_MazerActionsCallbackInterface.OnJump;
+                @MouseMove.started -= m_Wrapper.m_MazerActionsCallbackInterface.OnMouseMove;
+                @MouseMove.performed -= m_Wrapper.m_MazerActionsCallbackInterface.OnMouseMove;
+                @MouseMove.canceled -= m_Wrapper.m_MazerActionsCallbackInterface.OnMouseMove;
+                @Pause.started -= m_Wrapper.m_MazerActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_MazerActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_MazerActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_MazerActionsCallbackInterface = instance;
             if (instance != null)
@@ -193,6 +243,12 @@ public class @InputSystem : IInputActionCollection, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @MouseMove.started += instance.OnMouseMove;
+                @MouseMove.performed += instance.OnMouseMove;
+                @MouseMove.canceled += instance.OnMouseMove;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -201,5 +257,7 @@ public class @InputSystem : IInputActionCollection, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnMouseMove(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

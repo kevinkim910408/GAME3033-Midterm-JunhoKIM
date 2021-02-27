@@ -13050,6 +13050,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3
   jumpForce: 5
+  mouseSensitivity: 200
   timerText: {fileID: 167657579}
   timer: 99
   mat: {fileID: 2100000, guid: 2e09dc2127f102f4a93b0233d2563103, type: 2}
