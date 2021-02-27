@@ -21,6 +21,11 @@ public class PlayerController : MonoBehaviour
     CapsuleCollider capsuleCollider;
     CanvasUI canvasUI;
 
+    AudioSource audioSource;
+    [SerializeField] AudioClip jumpClip = null;
+    [SerializeField] AudioClip dieClip = null;
+    [SerializeField] AudioClip winClip = null;
+
 
     // Particle
     [SerializeField] ParticleSystem jumpParticlePrefab;
@@ -37,6 +42,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Text scoreText = null;
     [SerializeField] float timer;
     public float currentScore;
+
+   
 
 
     // material
@@ -64,6 +71,8 @@ public class PlayerController : MonoBehaviour
         capsuleCollider = GetComponent<CapsuleCollider>();
         skinnedMeshRenderer = GetComponentsInChildren<SkinnedMeshRenderer>();
         canvasUI = FindObjectOfType<CanvasUI>();
+        audioSource = GetComponent<AudioSource>();
+       
 
         canJump = true;
         canMove = true;
@@ -90,7 +99,23 @@ public class PlayerController : MonoBehaviour
         }
         transform.Rotate(Vector3.up, rotationDir * mouseSensitivity * Time.deltaTime);
 
-        
+    }
+
+    public void PlaySound(string action)
+    {
+        switch (action)
+        {
+            case "JUMP":
+                audioSource.clip = jumpClip;
+                break;
+            case "DIE":
+                audioSource.clip = dieClip;
+                break;
+            case "WIN":
+                audioSource.clip = winClip;
+                break;
+        }
+        audioSource.Play();
     }
 
     private void Timer()
@@ -127,7 +152,7 @@ public class PlayerController : MonoBehaviour
         if (!isJump)
             return;
 
-
+        PlaySound("JUMP");
 
         _rigidbody.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         isJump = false;

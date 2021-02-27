@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class CanvasUI : MonoBehaviour
 {
@@ -9,8 +10,21 @@ public class CanvasUI : MonoBehaviour
     [SerializeField] GameObject losePanel = null;
     [SerializeField] GameObject winPanel = null;
     [SerializeField] GameObject pausePanel = null;
+    [SerializeField] Text winScore = null;
+    [SerializeField] Text loseScore = null;
+
+    PlayerController playerController;
+
+    // bgm
+    [SerializeField] GameObject bgm = null;
+
 
     public bool isPause;
+
+    private void Awake()
+    {
+        playerController = FindObjectOfType<PlayerController>();
+    }
 
     private void Start()
     {
@@ -29,6 +43,9 @@ public class CanvasUI : MonoBehaviour
     {
         if (!isPause)
         {
+            bgm.SetActive(false);
+            playerController.PlaySound("DIE");
+            loseScore.text = "Score: " + playerController.currentScore.ToString();
             isPause = true;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
@@ -47,6 +64,9 @@ public class CanvasUI : MonoBehaviour
     {
         if (!isPause)
         {
+            bgm.SetActive(false);
+            playerController.PlaySound("WIN");
+            winScore.text = "Score: " + playerController.currentScore.ToString();
             isPause = true;
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
