@@ -9,14 +9,11 @@ public class Cube : MonoBehaviour
     // components
     protected MeshRenderer rend;
 
+
+
     // Start is called before the first frame update
     void Start()
     {
         rend = GetComponent<MeshRenderer>();
-    }
-
-     void  OnCollisionEnter(Collision collision)
-    {
-        
     }
 }

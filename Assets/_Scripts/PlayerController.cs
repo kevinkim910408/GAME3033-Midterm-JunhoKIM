@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,6 +17,11 @@ public class PlayerController : MonoBehaviour
     Animator animator;
     Rigidbody _rigidbody;
     CapsuleCollider capsuleCollider;
+    CanvasUI canvasUI;
+
+    [SerializeField] Text timerText = null;
+    [SerializeField] float timer;
+
 
     // material
     [SerializeField] Material mat;
@@ -30,6 +37,7 @@ public class PlayerController : MonoBehaviour
     bool isJump;
     bool canJump;
     bool canMove;
+    bool isLose;
 
     // Start is called before the first frame update
     void Awake()
@@ -38,9 +46,11 @@ public class PlayerController : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         capsuleCollider = GetComponent<CapsuleCollider>();
         skinnedMeshRenderer = GetComponentsInChildren<SkinnedMeshRenderer>();
+        canvasUI = FindObjectOfType<CanvasUI>();
 
         canJump = true;
         canMove = true;
+        isLose = false;
 
 
     }
@@ -49,37 +59,31 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Move();
+        Timer();
 
         if (canJump)
         {
             Jump();
         }
+
+
     }
 
-     void FixedUpdate()
+    private void Timer()
     {
-        // CapsuleCast to check ground
-        //float distanceToPoints = capsuleCollider.height / 2 - capsuleCollider.radius;
-        //Vector3 point1 = transform.position + capsuleCollider.center + Vector3.up * distanceToPoints;
-        //Vector3 point2 = transform.position + capsuleCollider.center - Vector3.up * distanceToPoints;
-        //Vector3 dir = Vector3.down;
-        //float castDistance = 0.1f;
-        //float radius = capsuleCollider.radius;
+        if (!isLose)
+        {
+            timer -= Time.deltaTime;
+            timerText.text = "Time   " + timer.ToString("N0");
+            if (timer <= 0)
+            {
+                isLose = true;
+                timerText.text = "GAME OVER";
+                canvasUI.LoseCondition();
 
-        //// 0.1f - distance between capsule and ground
-        //RaycastHit[] hit = Physics.CapsuleCastAll(point1, point2, radius, dir, castDistance, groundLayer);
-
-        //foreach(RaycastHit arr in hit)
-        //{
-        //    Debug.Log(arr.collider.name);
-        //}
-
-        //// hit ground
-        //if (hit.Length != 0)
-        //{
-        //    Jump();
-        //}
-
+            }
+        }
+        
     }
 
     private void Move()
@@ -124,12 +128,20 @@ public class PlayerController : MonoBehaviour
         //Debug.Log(value.Get());
     }
 
+
+
+
+
+
+
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
             canJump = true;
             animator.SetBool(IsJumpingHash, false);
+
         }
 
         if (collision.gameObject.CompareTag("Death"))
