@@ -18,7 +18,7 @@ private void Awake()
             rend.material = mat;
             hasGivenScore = true;
             canvasUI.WinCondition();
-            playerController.currentScore += 1000;
+            playerController.currentScore += 10;
 
         }
     }
