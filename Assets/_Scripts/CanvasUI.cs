@@ -25,24 +25,18 @@ public class CanvasUI : MonoBehaviour
 
     }
 
-    public void SwitchToMenu(bool menues)
-    {
-        Cursor.lockState = menues ? CursorLockMode.None : CursorLockMode.Locked;
-    }
-
-
     public void LoseCondition()
     {
         if (!isPause)
         {
-            SwitchToMenu(true);
             isPause = true;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
             Time.timeScale = 0;
             losePanel.gameObject.SetActive(true);
         }
         else
         {
-            SwitchToMenu(false);
             isPause = false;
             Time.timeScale = 1;
             losePanel.gameObject.SetActive(false);
@@ -53,14 +47,14 @@ public class CanvasUI : MonoBehaviour
     {
         if (!isPause)
         {
-            SwitchToMenu(true);
             isPause = true;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
             Time.timeScale = 0;
             winPanel.gameObject.SetActive(true);
         }
         else
         {
-            SwitchToMenu(false);
             isPause = false;
             Time.timeScale = 1;
             winPanel.gameObject.SetActive(false);
@@ -71,8 +65,9 @@ public class CanvasUI : MonoBehaviour
     {
         if (isPause)
         {
-            SwitchToMenu(false);
             isPause = false;
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
             Time.timeScale = 1;
             SceneManager.LoadScene("GameScene");
             losePanel.gameObject.SetActive(false);
@@ -96,8 +91,9 @@ public class CanvasUI : MonoBehaviour
     {
         if (!isPause)
         {
-            SwitchToMenu(true);
             isPause = true;
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
             Time.timeScale = 0;
             pausePanel.gameObject.SetActive(true);
         }
@@ -109,8 +105,9 @@ public class CanvasUI : MonoBehaviour
     {
         if (isPause)
         {
-            SwitchToMenu(false);
             isPause = false;
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
             Time.timeScale = 1;
             pausePanel.gameObject.SetActive(false);
         }
