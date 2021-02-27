@@ -8,8 +8,10 @@ public class BlueCube : Cube
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && !hasGivenScore)
         {
+            hasGivenScore = true;
+            playerController.currentScore += 10;
             rend.material = mat;
 
 

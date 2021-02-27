@@ -6,18 +6,20 @@ public class WinCube : Cube
 {
     CanvasUI canvasUI;
 
-
-    private void Awake()
+private void Awake()
     {
         canvasUI = FindObjectOfType<CanvasUI>();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && !hasGivenScore)
         {
             rend.material = mat;
+            hasGivenScore = true;
             canvasUI.WinCondition();
+            playerController.currentScore += 1000;
+
         }
     }
 }

@@ -22,7 +22,9 @@ public class PlayerController : MonoBehaviour
     CanvasUI canvasUI;
 
     [SerializeField] Text timerText = null;
+    [SerializeField] Text scoreText = null;
     [SerializeField] float timer;
+    public float currentScore;
 
 
     // material
@@ -61,21 +63,16 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         Move();
 
         Timer();
+        Score();
 
         if (canJump)
         {
             Jump();
         }
-
         transform.Rotate(Vector3.up, rotationDir * mouseSensitivity * Time.deltaTime);
-
-
-
-
     }
 
     private void Timer()
@@ -91,7 +88,11 @@ public class PlayerController : MonoBehaviour
                 canvasUI.LoseCondition();
             }
         }
-        
+    }
+
+    private void Score()
+    {
+        scoreText.text = "Score   " + currentScore.ToString("N0");
     }
 
     private void Move()
