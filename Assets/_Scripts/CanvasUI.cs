@@ -8,13 +8,16 @@ public class CanvasUI : MonoBehaviour
 
     [SerializeField] GameObject losePanel = null;
     [SerializeField] GameObject winPanel = null;
+    [SerializeField] GameObject pausePanel = null;
 
-    bool isPause;
+    public bool isPause;
 
     private void Start()
     {
         losePanel.SetActive(false);
         winPanel.SetActive(false);
+        pausePanel.SetActive(false);
+
         isPause = false;
     }
 
@@ -63,6 +66,34 @@ public class CanvasUI : MonoBehaviour
     }
     public void MenuButton()
     {
-        SceneManager.LoadScene("MenuScene");
+        if (isPause)
+        {
+            Time.timeScale = 1;
+            SceneManager.LoadScene("MenuScene");
+        }
+        if (!isPause)
+        {
+            SceneManager.LoadScene("MenuScene");
+        }
+    }
+
+    public void OnPause()
+    {
+        if (!isPause)
+        {
+            isPause = true;
+            Time.timeScale = 0;
+            pausePanel.gameObject.SetActive(true);
+        }
+    }
+
+    public void OnResume()
+    {
+        if (isPause)
+        {
+            isPause = false;
+            Time.timeScale = 1;
+            pausePanel.gameObject.SetActive(false);
+        }
     }
 }

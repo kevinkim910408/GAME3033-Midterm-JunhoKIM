@@ -58,7 +58,9 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         Move();
+
         Timer();
 
         if (canJump)
@@ -108,13 +110,20 @@ public class PlayerController : MonoBehaviour
     }
     public void OnMove(InputValue value)
     {
-        Vector2 getMoveValue = value.Get<Vector2>();
+        Vector2 getMoveValue;
 
-        moveVector.x = getMoveValue.x;
-        moveVector.z = getMoveValue.y;
+        if (!canvasUI.isPause)
+        {
+            getMoveValue = value.Get<Vector2>();
+            moveVector.x = getMoveValue.x;
+            moveVector.z = getMoveValue.y;
 
-        animator.SetFloat(MovementXHash, getMoveValue.x);
-        animator.SetFloat(MovementZHash, getMoveValue.y);
+            animator.SetFloat(MovementXHash, getMoveValue.x);
+            animator.SetFloat(MovementZHash, getMoveValue.y);
+        }
+        
+
+       
     }
 
     public void OnJump(InputValue value)
