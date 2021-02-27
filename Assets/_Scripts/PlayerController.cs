@@ -16,14 +16,20 @@ public class PlayerController : MonoBehaviour
     Rigidbody _rigidbody;
     CapsuleCollider capsuleCollider;
 
+    // material
+    [SerializeField] Material mat;
+    SkinnedMeshRenderer[] skinnedMeshRenderer;
+
     readonly int MovementXHash = Animator.StringToHash("MoveX");
     readonly int MovementZHash = Animator.StringToHash("MoveZ");
     readonly int IsJumpingHash = Animator.StringToHash("isJumping");
+    readonly int IsDeadHash = Animator.StringToHash("isDead");
 
 
     // boolean
     bool isJump;
     bool canJump;
+    bool canMove;
 
     // Start is called before the first frame update
     void Awake()
@@ -31,9 +37,12 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         _rigidbody = GetComponent<Rigidbody>();
         capsuleCollider = GetComponent<CapsuleCollider>();
+        skinnedMeshRenderer = GetComponentsInChildren<SkinnedMeshRenderer>();
 
         canJump = true;
-        
+        canMove = true;
+
+
     }
 
     // Update is called once per frame
@@ -75,7 +84,7 @@ public class PlayerController : MonoBehaviour
 
     private void Move()
     {
-        if(moveVector.magnitude > 0)
+        if(moveVector.magnitude > 0 && canMove)
         {
             moveVector.Normalize();
             moveVector = moveVector * moveSpeed * Time.deltaTime;
@@ -121,6 +130,18 @@ public class PlayerController : MonoBehaviour
         {
             canJump = true;
             animator.SetBool(IsJumpingHash, false);
+        }
+
+        if (collision.gameObject.CompareTag("Death"))
+        {
+            for(int i = 0; i < skinnedMeshRenderer.Length; ++i)
+            {
+                skinnedMeshRenderer[i].material = mat;
+            }
+            capsuleCollider.height = 0.5f;
+            animator.SetBool(IsDeadHash, true);
+            canJump = false;
+            canMove = false;
         }
         
     }
