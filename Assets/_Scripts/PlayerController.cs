@@ -80,7 +80,6 @@ public class PlayerController : MonoBehaviour
                 isLose = true;
                 timerText.text = "GAME OVER";
                 canvasUI.LoseCondition();
-
             }
         }
         
